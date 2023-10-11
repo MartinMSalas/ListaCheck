@@ -1,26 +1,34 @@
 package com.example.bookauthordemo.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Book {
     private String title;
     private String isbn;
-    private String publisher;
+    @ManyToOne
+    private Publisher publisher;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long idBook;
 
+    @ManyToMany
+    @JoinTable(name= "author_book", joinColumns=@JoinColumn(name="book_id"), inverseJoinColumns=@JoinColumn(name="author_id"))
+    private Set<Author> authors = new HashSet<>();
+
     public Book() {
     }
 
-    public Book(String title, String isbn, String publisher) {
+
+
+
+    public Book(String title, String isbn) {
         this.title = title;
         this.isbn = isbn;
-        this.publisher = publisher;
+
     }
 }
